@@ -11,10 +11,19 @@ namespace RustLegacyAPI
 {
     public class API
     {
-        System.Diagnostics.Process process;
+        private System.Diagnostics.Process process;
+        private bool debug = false;
+
         public API(System.Diagnostics.Process process)
         {
             this.process = process;
+
+            Console.WriteLine("Адрес игры: 0x" + Offsets.GameHandle.ToString("X"));
+        }
+        public API(System.Diagnostics.Process process, bool debug)
+        {
+            this.process = process;
+            this.debug = debug;
 
             Console.WriteLine("Адрес игры: 0x" + Offsets.GameHandle.ToString("X"));
         }
@@ -28,12 +37,18 @@ namespace RustLegacyAPI
                 IntPtr clientdll = Offsets.GameHandle;
                 IntPtr read = memory.Read<IntPtr>(clientdll);
                 clientdll = IntPtr.Subtract(read, 0x6545618D);
-                //Console.WriteLine("Базовый адресс: 0x" + clientdll.ToString("X"));
+                if (debug)
+                {
+                    Console.WriteLine("Базовый адресс Y позиций: 0x" + clientdll.ToString("X"));
+                }
                 IntPtr addres = ReadOffset(memory, clientdll, Offsets.Y_Position);
                 if (addres != IntPtr.Zero)
                 {
+                    if (debug)
+                    {
+                        Console.WriteLine("Готовый адресс Y позиций: 0x" + addres.ToString("X"));
+                    }
                     float health = memory.Read<float>(addres);
-                    Console.WriteLine(health);
                     return health;
                 }
                 else { return 0; }
@@ -46,8 +61,20 @@ namespace RustLegacyAPI
                 IntPtr clientdll = Offsets.GameHandle;
                 IntPtr read = memory.Read<IntPtr>(clientdll);
                 clientdll = IntPtr.Subtract(read, 0x6545618D);
+                if (debug)
+                {
+                    Console.WriteLine("Базовый адресс Y позиций: 0x" + clientdll.ToString("X"));
+                }
                 IntPtr addres = ReadOffset(memory, clientdll, Offsets.Y_Position);
-                memory.Write<float>(addres, value);
+                if (addres != IntPtr.Zero)
+                {
+                    if (debug)
+                    {
+                        Console.WriteLine("Готовый адресс Y позиций: 0x" + addres.ToString("X"));
+                    }
+                    memory.Write<float>(addres, value);
+                }
+                else { }
             }
         }
         public IntPtr ReadOffset(IMemory memory, IntPtr address, int[] offset)
@@ -55,7 +82,7 @@ namespace RustLegacyAPI
 
                 for (int i = 0; i < offset.Count() - 1; i++)
                 {
-                    address = memory.Read<IntPtr>(address + offset[i]);
+                     loaddress = memory.Read<IntPtr>(address + offset[i]);
                     Console.WriteLine("0x" + address.ToString("X"));
                 }
                 address += offset[offset.Count() - 1];
