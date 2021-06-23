@@ -44,6 +44,27 @@ namespace RustLegacyAPI
                 return health;
             }
         }
+        public float Y_Position
+        {
+            get
+            {
+                var processSharp = new ProcessSharp(process, MemoryType.Remote);
+                IMemory memory = processSharp.Memory;
+                IntPtr clientdll = Offsets.PlayerPosition;
+                Console.WriteLine("Базовый адресс: 0x" + clientdll.ToString("X"));
+                IntPtr addres = ReadOffset(memory, clientdll, Offsets.Y_Position);
+                float health = memory.Read<float>(addres);
+                return health;
+            }
+            set
+            {
+                var processSharp = new ProcessSharp(process, MemoryType.Remote);
+                IMemory memory = processSharp.Memory;
+                IntPtr clientdll = Offsets.PlayerPosition;
+                IntPtr addres = ReadOffset(memory, clientdll, Offsets.Y_Position);
+                memory.Write<float>(addres, value);
+            }
+        }
         public IntPtr ReadOffset(IMemory memory, IntPtr address, int[] offset)
         {
             for (int i = 0; i < offset.Count() - 1; i++)
@@ -66,5 +87,9 @@ namespace RustLegacyAPI
         public static IntPtr PlayerModule = new IntPtr(0x448D36E8);
         public static int[] Health = new[] { 0x38, 0x8, 0x50, 0x250, 0x8, 0x24, 0x94 };
         public static int[] Food = new[] { 0x38, 0x8, 0x48, 0x8, 0x554, 0x34, 0x1F4 };
+
+         public static IntPtr PlayerPosition = new IntPtr(0x036C2880);
+
+        public static int[] Y_Position = new[] { 0x8, 0x0, 0x10, 0x4, 0x0, 0x0, 0x4C0 };
     }
 }
