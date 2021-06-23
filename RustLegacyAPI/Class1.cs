@@ -79,15 +79,19 @@ namespace RustLegacyAPI
         }
         public IntPtr ReadOffset(IMemory memory, IntPtr address, int[] offset)
         {
+            try
+            {
+
 
                 for (int i = 0; i < offset.Count() - 1; i++)
                 {
-                     loaddress = memory.Read<IntPtr>(address + offset[i]);
+                    address = memory.Read<IntPtr>(address + offset[i]);
                     Console.WriteLine("0x" + address.ToString("X"));
                 }
                 address += offset[offset.Count() - 1];
                 return address;
-
+            }
+            catch { return IntPtr.Zero; }
         }
     }
 
