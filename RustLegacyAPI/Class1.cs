@@ -16,6 +16,7 @@ namespace RustLegacyAPI
         {
             this.process = process;
         }
+        /* Not Working
         public float Health
         {
             get
@@ -23,9 +24,7 @@ namespace RustLegacyAPI
                 var processSharp = new ProcessSharp(process, MemoryType.Remote);
                 IMemory memory = processSharp.Memory;
                 IntPtr clientdll = Offsets.PlayerModule;
-                //Console.WriteLine("Базовый адресс: 0x" + clientdll.ToString("X"));
                 IntPtr addres = ReadOffset(memory, clientdll, Offsets.Health);
-                //Console.WriteLine("Адресс здоровья: 0x" + addres.ToString("X"));
                 float health = memory.Read<float>(addres);
                 return health;
             }
@@ -37,9 +36,7 @@ namespace RustLegacyAPI
                 var processSharp = new ProcessSharp(process, MemoryType.Remote);
                 IMemory memory = processSharp.Memory;
                 IntPtr clientdll = Offsets.PlayerModule;
-                //Console.WriteLine("Базовый адресс: 0x" + clientdll.ToString("X"));
                 IntPtr addres = ReadOffset(memory, clientdll, Offsets.Food);
-                //Console.WriteLine("Адресс здоровья: 0x" + addres.ToString("X"));
                 if (addres != IntPtr.Zero)
                 {
                     float health = memory.Read<float>(addres);
@@ -48,6 +45,7 @@ namespace RustLegacyAPI
                 else { return 0; }
             }
         }
+        */
         public float Y_Position
         {
             get
