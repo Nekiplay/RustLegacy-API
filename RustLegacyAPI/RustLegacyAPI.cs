@@ -112,9 +112,6 @@ namespace RustLegacyAPI
             return result;
         }
         public static IntPtr GameHandle = new IntPtr(0x905A4D);
-        public static IntPtr PlayerModule = new IntPtr(0x448D36E8);
-        public static int[] Health = new[] { 0x38, 0x8, 0x50, 0x250, 0x8, 0x24, 0x94 };
-        public static int[] Food = new[] { 0x38, 0x8, 0x48, 0x8, 0x554, 0x34, 0x1F4 };
 
          public static IntPtr PlayerPosition = new IntPtr(0x037B8838);
 
